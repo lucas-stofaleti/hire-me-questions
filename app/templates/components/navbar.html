@@ -1,13 +1,9 @@
 <nav
   class="navbar navbar-expand-md border-bottom border-secondary-subtle shadow-sm bg-white fw-medium"
-  style="display: flex"
 >
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold" href="/">Navbar</a>
-    <form>
-      <input style="minmax: (10px, 100%)" placeholder="Search" />
-      <button type="submit">Search</button>
-    </form>
+  <div class="container-xxl">
+    <a class="navbar-brand fw-bold" href="/">HIRE.ME</a>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -27,25 +23,38 @@
         <li class="nav-item">
           <a class="nav-link" href="/link">Link</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
             role="button"
             data-bs-toggle="dropdown"
-            aria-expanded="false"
+            aria-expanded="true"
           >
-            Dropdown
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
+              class="rounded-circle"
+              height="24"
+              alt="Avatar"
+            />
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdownMenu"
+          >
+            <li>
+              <a class="dropdown-item" href="#">My profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Logout</a>
+            </li>
           </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
         </li>
       </ul>
     </div>
