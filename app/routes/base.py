@@ -5,6 +5,7 @@ from app.db.database import get_connection
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="app/templates")
+
 base_router = APIRouter()
 
 @base_router.get("/", response_class=HTMLResponse)
