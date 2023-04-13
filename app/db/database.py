@@ -1,8 +1,8 @@
 import pymongo
+from app.utils.settings import settings
 
+client = pymongo.MongoClient(f"mongodb+srv://{settings.mongo_user}:{settings.mongo_password}@{settings.mongo_url}/?retryWrites=true&w=majority")
 db = client.hireme
 
-async def get_connection():
-    print(f"Client: {client}")
-    
+def get_connection():
     return db

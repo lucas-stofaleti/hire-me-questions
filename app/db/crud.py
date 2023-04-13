@@ -5,8 +5,3 @@ import pymongo
 
 def get_user_tests(db = Depends(get_connection)):
     print(db.users.find({"mail": "lucastofaleti@hotmail.com"}))
-    # tests = db.tests.find({"users": ObjectId(id)})
-    # response = []
-    # for test in tests:
-    #     response.append(test)
-    # return response
