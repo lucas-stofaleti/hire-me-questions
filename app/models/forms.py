@@ -1,14 +1,18 @@
 from pydantic import BaseModel
 from fastapi import Form
 
-class LoginForm(BaseModel):
+class RegistrationForm(BaseModel):
+    name: str
+    surname: str
     mail: str
     password: str
 
     @classmethod
     def as_form(
         cls,
+        name: str = Form(...),
+        surname: str = Form(...),
         mail: str = Form(...),
         password: str = Form(...)
     ):
-        return cls(mail=mail, password=password)
+        return cls(name=name, surname=surname, mail=mail, password=password)
