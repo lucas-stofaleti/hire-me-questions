@@ -26,6 +26,7 @@
         class="form-control"
         id="floatingInput"
         placeholder="name@example.com"
+        required
         name="username"
       />
       <label for="floatingInput">Email address</label>
@@ -36,10 +37,12 @@
         class="form-control"
         id="floatingPassword"
         placeholder="Password"
+        required
         name="password"
       />
       <label for="floatingPassword">Password</label>
     </div>
+    <p>Don't have an account? <a href="/signup">Signup</a></p>
     {% if msg %}
     <div class="alert alert-success" role="alert">{{msg}}</div>
     {% endif %}

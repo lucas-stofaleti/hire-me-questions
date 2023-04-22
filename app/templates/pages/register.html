@@ -62,11 +62,13 @@
         class="form-control"
         id="floatingPassword"
         placeholder="Password"
+        required
         autocomplete="new-password"
         name="password"
       />
       <label for="floatingPassword">Password</label>
     </div>
+    <p>Already have an account? <a href="/login">Login</a></p>
     {% if error %}
     <div class="alert alert-danger" role="alert">{{error}}</div>
     {% endif %}
