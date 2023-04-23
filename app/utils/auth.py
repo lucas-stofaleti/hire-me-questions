@@ -2,6 +2,8 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from app.utils.settings import settings
+from fastapi import Request, HTTPException
+from app.models.user import User
 
 SECRET_KEY = settings.secret_key
 ALGORITHM = settings.algorithm
@@ -20,11 +22,22 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def get_current_user(token: str):
+def decode_token(token: str):
     payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    print(payload)
+    return payload
+
+def auth_cookie(request: Request):
+    token = request.cookies.get('token')
+    if not token:
+        raise HTTPException(status_code=401)
+    try:
+        payload = decode_token(token)
+    except:
+        raise HTTPException(status_code=401)
+    user = User(payload)
+    return user

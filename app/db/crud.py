@@ -10,14 +10,14 @@ def get_user_tests(db = Depends(get_connection)):
 def get_user(db, mail: str):
     return db.users.find_one({"mail": mail})
 
-def register_user(db, form_data: RegistrationForm, permissions: list = [], is_active: bool = True):
+def register_user(db, form_data: RegistrationForm, is_admin: bool = False, is_active: bool = True):
     user = {
         "name": form_data.name,
         "surname": form_data.surname,
         "mail": form_data.mail,
         "hashed_password": form_data.password,
         "is_active": is_active,
-        "permissions": permissions
+        "is_admin": is_admin
     }
     user = db.users.insert_one(user)
     return user.inserted_id

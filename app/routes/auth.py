@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends, Cookie, status
+from fastapi import APIRouter, Request, Depends, status
 from fastapi.responses import HTMLResponse
 from app.db.database import get_connection
 from fastapi.templating import Jinja2Templates
@@ -15,22 +15,27 @@ auth_router = APIRouter()
 @auth_router.get("/login", response_class=HTMLResponse)
 def login(request: Request, error: str | None = None, msg: str | None = None):
     return templates.TemplateResponse(
-        "pages/login.html", {"request": request, "msg": msg}
+        "pages/login.html", {"request": request, "msg": msg, "error": error}
     )
 
 @auth_router.post("/login", response_class=HTMLResponse)
 def login_post(request: Request, client = Depends(get_connection), form_data: OAuth2PasswordRequestForm = Depends()):
-    print(f"Normal Password: {form_data.password}")
-    print(f"Hashed Password: {get_password_hash(form_data.password)}")
-    print(verify_password(form_data.password, get_password_hash(form_data.password)))
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    error = "Wrong mail or password!"
+    user = get_user(db=client, mail=form_data.username)
+    if not user:
+        return RedirectResponse(f"/login?error={error}", status_code=status.HTTP_303_SEE_OTHER)
+    elif not user["is_active"]:
+        return RedirectResponse("/login?error=User is not activated!", status_code=status.HTTP_303_SEE_OTHER)
+    elif not verify_password(form_data.password, user["hashed_password"]):
+        return RedirectResponse(f"/login?error={error}", status_code=status.HTTP_303_SEE_OTHER)
+    user["_id"] = str(user["_id"])
+    del user["hashed_password"]
+    del user["is_active"]
     access_token = create_access_token(
-        data={"sub": form_data.username, "role": ["test:write", "test:read"]}, expires_delta=access_token_expires
+        data=user
     )
-    response = templates.TemplateResponse(
-        "pages/login.html", {"request": request}
-    )
-    response.set_cookie(key="token", value=access_token, httponly=True)
+    response = RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(key="token", value=access_token, httponly=True, expires=settings.access_token_expire_minutes*60)
     return response
 
 @auth_router.get("/signup", response_class=HTMLResponse)
